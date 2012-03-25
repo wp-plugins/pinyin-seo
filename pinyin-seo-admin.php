@@ -88,5 +88,5 @@ if($_POST['reset_tag_slug']){
      </form>
 	<p>感谢您使用拼音SEO插件，祝您的网站在搜索引擎里有良好排名，若您有任何意见或扩展建议，欢迎在<a href="http://www.xuewp.com/pinyin-seo/">拼音SEO插件主页</a>留言</p>
 <p>另向大家征集中文标题里常见的多音字，下一版将添加简单的多音字处理功能，需要词库。</p>
-<p>其他xuewp.com出品的插件：<a href="http://www.xuewp.com/chinese-captcha/">Wordpress中文验证码</a>
+<p>其他xuewp.com出品的插件：<a href="http://www.xuewp.com/chinese-captcha/">Wordpress中文验证码</a></p>
   </div>
