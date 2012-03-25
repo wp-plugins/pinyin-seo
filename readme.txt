@@ -11,26 +11,44 @@ Stable tag: trunk
 == Description ==
 
 拼音SEO插件可在文章发布时将文章标题，分类目录以及标签的永久链接转换成汉语拼音格式。
+
 繁简通用，更有利于百度SEO，baidu就是最好的证明。
+
 当前拼音数据库共收录20966汉字，繁简通用，已包括中日韩统一表意文字U+4E00..U+9FA5范围所有汉字，韩国和日本造的汉字，均按形声字方法注音。
+
 一字一音，下一版将添加简单多音字功能。
+
 This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks for SEO purpose.
+
 Support all Simplified and Traditional Chinese charaters.
+
 Including 20966 chinese characters including CJK unicode range U+4E00..U+9FA5。
+
 It will enable Chinese Polyphone function next version.
 
+
 包含功能：
+
 设定拼音分隔符
+
 设定拼音大小写格式
+
 以下两项功能涉及数据库操作，建议先备份数据库后在本地操作：
+
 重置所有文章永久链接(post_name)，把wp_posts表中post_name字段写成拼音格式
+
 重置所有分类目录和标签的永久链接(slug)，把wp_terms表中slug字段写成拼音格式
 
+
 建议：
+
 分类目录不使用拼音分隔符，每次添加新的分类目录时手工修改，即pinyinfengefu这样的形式，以便和标签有所区别。
+
 标签前缀加tag，以免和文章页面有所区别。标签和文章及页面均使用pin-yin-ge-shi这样的形式。
 
+
 官方演示：demo
+
 http://www.xuewp.com/pinyin-seo/  如果您有任何问题或建议也可以留言，谢谢支持。
 
 == Installation ==
