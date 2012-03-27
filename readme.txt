@@ -1,10 +1,10 @@
-===Pinyin SEO===
+=== Pinyin SEO ===
 Contributors: Chao Wang
 Donate link: http://www.xuewp.com/pinyin-seo/
 Tags: pinyin,SEO,slug,permalink,chinese romanization,Chinese characters
 Requires at least: 2.1
 Tested up to: 3.3.1
-Stable tag: trunk
+Stable tag: /trunk/
 
 拼音SEO插件将文章标题，分类目录以及标签的永久链接转换成拼音。Convert Chinese characters to Pinyin Permalinks. 
 
@@ -14,11 +14,11 @@ Stable tag: trunk
 
 *   可以设定单独对文章的永久链接使用拼音，而不对分类目录和标签使用拼音。
 *   繁简通用，更有利于百度SEO，baidu就是最好的证明。
-*   本拼音数据库共收录**20966汉字，繁简通用**，已包括中日韩统一表意文字U+4E00..U+9FA5范围所有汉字，韩国和日本造的汉字，均按形声字方法注音。
+*   本拼音数据库共收录**20966个汉字，繁简通用**，已包括中日韩统一表意文字U+4E00..U+9FA5范围所有汉字，韩国和日本造的汉字，均按形声字方法注音。
 *   一字一音，2.0版将添加简单多音字功能。
 
 *   This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks and slugs for SEO purpose.
-*   Including 20966 chinese characters in CJK unicode range U+4E00..U+9FA5。
+*   Including 20966 chinese characters in CJK unicode range U+4E00..U+9FA5.
 *   Support either Simplified or Traditional Chinese charaters.
 
 包含功能：
