@@ -19,7 +19,7 @@ Stable tag: /trunk/
 
 *   This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks and slugs for SEO purpose.
 *   Including 20966 chinese characters in CJK unicode range U+4E00..U+9FA5.
-*   Support either Simplified or Traditional Chinese charaters.
+*   Support nearly all Simplified Chinese charaters and Traditional Chinese charaters which can print in computer with default fonts.
 
 包含功能：
 
