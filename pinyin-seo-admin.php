@@ -12,6 +12,7 @@ if (isset($_POST['submit'])) {
         check_admin_referer( 'pinyin_seo-options_update');
 $pinyin_seo_update=array(
          'pinyin_format' =>(trim($_POST['pinyin_format']) != '' ) ? trim($_POST['pinyin_format']) : $pinyin_seo_option_defaults['pinyin_format'],
+		 'pinyin_slugs' =>(trim($_POST['pinyin_slugs']) != '' ) ? trim($_POST['pinyin_slugs']) : $pinyin_seo_option_defaults['pinyin_slugs'],
 		 'pinyin_separator' =>(trim($_POST['pinyin_separator']) != '' ) ? trim($_POST['pinyin_separator']) : $pinyin_seo_option_defaults['pinyin_separator']);
 		update_option('pinyin_seo', $pinyin_seo_update);
 		$pinyin_seo_options=get_option('pinyin_seo');
@@ -46,7 +47,7 @@ if($_POST['reset_tag_slug']){
 		  <tr valign="top">
           <th scope="row">拼音分隔符 separator:</th>
      <td>
-          <input type="radio" name="pinyin_separator" value="-" <?php if( $pinyin_seo_options['pinyin_separator']=='-')echo 'checked';?> >中横线-  拼音格式： pin-yin-ge-shi （推荐）
+          <input type="radio" name="pinyin_separator" value="-" <?php if( $pinyin_seo_options['pinyin_separator']=='-')echo 'checked';?> >中横线-  拼音格式： pin-yin-ge-shi （推荐）（默认设置）
     </td>
 	<tr valign="top"><td></td><td><input type="radio" name="pinyin_separator" value="_" <?php if( $pinyin_seo_options['pinyin_separator']=='_')echo 'checked';?>  >下划线_  拼音格式： pin_yin_ge_shi </td></tr>
           </tr>    
@@ -55,17 +56,25 @@ if($_POST['reset_tag_slug']){
 		  		  <tr valign="top">
           <th scope="row">拼音大小写:</th>
      <td>
-          <input type="radio" name="pinyin_format" value="lower" <?php if( $pinyin_seo_options['pinyin_format']=='lower')echo 'checked';?> >拼音全部小写字母（默认设置） 例：xiao
+          <input type="radio" name="pinyin_format" value="lower" <?php if( $pinyin_seo_options['pinyin_format']=='lower')echo 'checked';?> >拼音全部小写字母 例：xiao （默认设置） 
     </td>
 	<tr valign="top"><td></td><td><input type="radio" name="pinyin_format" value="ucwords" <?php if( $pinyin_seo_options['pinyin_format']=='ucwords')echo 'checked';?>  >拼音首字母大写 例：Xiao</td></tr>
           </tr>    
 		  <tr valign="top"><td></td><td><input type="radio" name="pinyin_format" value="upper" <?php if( $pinyin_seo_options['pinyin_format']=='upper')echo 'checked';?>  >拼音全部大写字母 例：XIAO</td></tr>
           </tr>
+		  		  <tr valign="top">
+          <th scope="row">分类目录和标签是否使用拼音链接:</th>
+     <td>
+          <input type="radio" name="pinyin_slugs" value="true" <?php if( $pinyin_seo_options['pinyin_slugs']=='true')echo 'checked';?> >使用（默认设置）
+    </td>
+	<tr valign="top"><td></td><td><input type="radio" name="pinyin_slugs" value="false" <?php if( $pinyin_seo_options['pinyin_slugs']=='false')echo 'checked';?> >不使用（如果你觉得中文的标签tag比拼音更利于SEO，则选择不使用，同时也关闭了分类目录category的slug自动转化为拼音，可以手动修改。</td></tr>
+          </tr>  
           </table>
         <p class="submit">
          <input type="submit" name="submit" value=" 更新设置&raquo; " />
        </p>
 	   <h2>重置所有文章永久链接(post_name)，把wp_posts表中post_name字段写成拼音格式</h2>
+	    <p>注意事项：经测试，每条记录需要0.06秒，10秒160条，一分钟可以960条，已经设定为不限制php执行时间，请根据自己实际状况判断php是否超时。</p>
 	  <p>请先在上面设定好您所要使用的拼音分隔符是中横线"-"还是下划线"_"以及拼音的大小写格式,然后再执行本操作。</p>
 	 <p>如果您之前不是采用文章名 <strong>/%postname%/</strong> 作为链接格式的，只需要点击下面的<strong>重置文章永久链接</strong>即可重写数据库中全部文章和页面的post_name字段写成拼音格式。</p>
 	 <p>此外还有个功能，例如您变更了拼音分隔符，通过此项操作可以使所有文章拼音分隔符一致。</p>
@@ -87,6 +96,6 @@ if($_POST['reset_tag_slug']){
        </p>
      </form>
 	<p>感谢您使用拼音SEO插件，祝您的网站在搜索引擎里有良好排名，若您有任何意见或扩展建议，欢迎在<a href="http://www.xuewp.com/pinyin-seo/">拼音SEO插件主页</a>留言</p>
-<p>另向大家征集中文标题里常见的多音字，下一版将添加简单的多音字处理功能，需要词库。</p>
+<p>另向大家征集中文标题里常见的多音字，2.0版将添加简单的多音字处理功能，需要词库。</p>
 <p>其他xuewp.com出品的插件：<a href="http://www.xuewp.com/chinese-captcha/">Wordpress中文验证码</a></p>
   </div>

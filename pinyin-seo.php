@@ -2,9 +2,9 @@
 /*
 Plugin Name: Pinyin SEO(拼音SEO)
 Plugin URI: http://www.xuewp.com/pinyin-seo/
-Description: 拼音SEO插件可在文章发布时自动根据文章中文标题将永久链接转换成拼音格式，当前拼音数据库包含20966字，繁简通用，更有利于百度SEO，baidu就是最好的证明。下一版将添加简单多音字功能。This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks for SEO purpose.
+Description: 拼音SEO插件可在文章发布时将中文标题将或者分类目录以及标签的永久链接转换成拼音格式，当前拼音数据库包含20966字，繁简通用，更有利于百度SEO，baidu就是最好的证明。2.0版将添加简单多音字功能。This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks for SEO purpose.
 Author: Chao Wang<xuewp.com@live.com>
-Version: 1.0
+Version: 1.1
 Author URI: http://www.xuewp.com/
 */
 /*Copyright 2012 Chao Wang (email: xuewp.com@live.com )
@@ -23,16 +23,17 @@ Author URI: http://www.xuewp.com/
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-define('PINYINSEO_VERSION', '1.0');
+define('PINYINSEO_VERSION', '1.1');
  if ( ! defined( 'WP_CONTENT_DIR' ) )
        define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
  if ( ! defined( 'WP_PLUGIN_DIR' ) )
        define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 
-$pinyin_seo_option_defaults=array('pinyin_separator'=>'-','pinyin_format'=>'lower');
+$pinyin_seo_option_defaults=array('pinyin_separator'=>'-','pinyin_format'=>'lower','pinyin_slugs'=>'true');
 if(!get_option('pinyin_seo')){
 add_option('pinyin_seo', $pinyin_seo_option_defaults, '', 'yes');}
 $pinyin_seo_options=get_option('pinyin_seo');
+$pinyin_seo_options= array_merge($pinyin_seo_option_defaults, $pinyin_seo_options);
 
 function PinyinSEO($chinese)
 {
@@ -94,7 +95,15 @@ if (get_bloginfo('charset')!="UTF-8") {
 	return $retitle;
 }
 
+function pinyin_seo_slugs($slug) {
+	if ($slug) return $slug;
+	$title = $_POST['post_title'];
+	$title = PinyinSEO($title);
+	return $title;
+}
+
 function reset_postname_to_pinyin(){
+    set_time_limit(0);
 	global $wpdb;
 	$posts = $wpdb->get_results("SELECT ID,post_title,post_status,post_name FROM $wpdb->posts ORDER BY id ASC");
 	$i=0;
@@ -109,6 +118,7 @@ function reset_postname_to_pinyin(){
 }
 
 function reset_category_slug_to_pinyin(){
+    set_time_limit(0);
 	global $wpdb;
 	$slugs = $wpdb->get_results("SELECT * FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON ($wpdb->term_taxonomy.term_id = $wpdb->terms.term_id) WHERE $wpdb->term_taxonomy.taxonomy='category' ORDER BY $wpdb->terms.term_id ASC");
 	$i=0;
@@ -122,6 +132,7 @@ function reset_category_slug_to_pinyin(){
 }
 
 function reset_tag_slug_to_pinyin(){
+    set_time_limit(0);
 	global $wpdb;
 	$slugs = $wpdb->get_results("SELECT * FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON ($wpdb->term_taxonomy.term_id = $wpdb->terms.term_id) WHERE $wpdb->term_taxonomy.taxonomy='post_tag' ORDER BY $wpdb->terms.term_id ASC");
 	$i=0;
@@ -134,7 +145,11 @@ function reset_tag_slug_to_pinyin(){
 	echo " <div class=\"updated\"><p>操作成功：所有标签(tag)的永久链接都已经重写! (一共有:<strong> $i </strong>个标签(tag)的永久链接被改写)</p></div>";
 }
 
-add_filter('sanitize_title', 'PinyinSEO', 1);
+if ($pinyin_seo_options['pinyin_slugs']=='true'){
+add_filter('sanitize_title', 'PinyinSEO', 1);}
+else{
+add_filter('name_save_pre', 'pinyin_seo_slugs', 0);}
+remove_filter('sanitize_title', 'sanitize_title_with_dashes');
 add_action('admin_menu', 'PinyinSEO_menu');
 
 function PinyinSEO_menu(){
