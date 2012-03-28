@@ -4,7 +4,7 @@ Plugin Name: Pinyin SEO(拼音SEO)
 Plugin URI: http://www.xuewp.com/pinyin-seo/
 Description: 拼音SEO插件可在文章发布时将中文标题将或者分类目录以及标签的永久链接转换成拼音格式，当前拼音数据库包含20966字，繁简通用，更有利于百度SEO，baidu就是最好的证明。2.0版将添加简单多音字功能。This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks for SEO purpose.
 Author: Chao Wang<xuewp.com@live.com>
-Version: 1.1
+Version: 1.2
 Author URI: http://www.xuewp.com/
 */
 /*Copyright 2012 Chao Wang (email: xuewp.com@live.com )
@@ -23,7 +23,7 @@ Author URI: http://www.xuewp.com/
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-define('PINYINSEO_VERSION', '1.1');
+define('PINYINSEO_VERSION', '1.2');
  if ( ! defined( 'WP_CONTENT_DIR' ) )
        define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
  if ( ! defined( 'WP_PLUGIN_DIR' ) )
@@ -34,12 +34,11 @@ if(!get_option('pinyin_seo')){
 add_option('pinyin_seo', $pinyin_seo_option_defaults, '', 'yes');}
 $pinyin_seo_options=get_option('pinyin_seo');
 $pinyin_seo_options= array_merge($pinyin_seo_option_defaults, $pinyin_seo_options);
+$pinyinseparator=$pinyin_seo_options['pinyin_separator'];
+$pinyinformat=$pinyin_seo_options['pinyin_format'];
 
 function PinyinSEO($chinese)
 {
-global $pinyin_seo_options;
-$pinyinseparator=$pinyin_seo_options['pinyin_separator'];
-$pinyinformat=$pinyin_seo_options['pinyin_format'];
 if (get_bloginfo('charset')!="UTF-8") {
 	$chinese= iconv(get_bloginfo('charset'), "UTF-8", $chinese);
 	}
@@ -78,21 +77,26 @@ if (get_bloginfo('charset')!="UTF-8") {
         }
     } 
     $retitle=trim(preg_replace('/-+/', '-', $retitle),'-');
+	return $retitle;
+}
+
+function pinyin_seo_specials($title){
+    global $pinyinformat,$pinyinseparator;
 	if($pinyinformat=='ucwords'){
-	$retitle=str_replace('-',' ',$retitle);
-	$retitle=ucwords($retitle);
-	$retitle=str_replace(' ','-',$retitle);
+	$title=str_replace('-',' ',$title);
+	$title=ucwords($title);
+	$title=str_replace(' ','-',$title);
 	}
 	if($pinyinformat=='upper'){
-	$retitle=strtoupper($retitle);
+	$title=strtoupper($title);
 	}
 	if($pinyinseparator=='_'){
-	$retitle=str_replace('-','_',$retitle);
+	$title=str_replace('-','_',$title);
 	}
 	if($pinyinseparator=='no'){
-	$retitle=str_replace('-','',$retitle);
+	$title=str_replace('-','',$title);
 	}
-	return $retitle;
+    return $title; 
 }
 
 function pinyin_seo_slugs($slug) {
@@ -108,7 +112,7 @@ function reset_postname_to_pinyin(){
 	$posts = $wpdb->get_results("SELECT ID,post_title,post_status,post_name FROM $wpdb->posts ORDER BY id ASC");
 	$i=0;
 	foreach ($posts as $post) {
-		$new_postname = PinyinSEO($post->post_title);
+		$new_postname = pinyin_seo_specials(PinyinSEO($post->post_title));
 		$sql = "UPDATE $wpdb->posts SET `post_name` = '{$new_postname}' WHERE id = '$post->ID'";
 		if($post->post_status=='publish'){
 		$update = $wpdb->query($sql);
@@ -123,7 +127,7 @@ function reset_category_slug_to_pinyin(){
 	$slugs = $wpdb->get_results("SELECT * FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON ($wpdb->term_taxonomy.term_id = $wpdb->terms.term_id) WHERE $wpdb->term_taxonomy.taxonomy='category' ORDER BY $wpdb->terms.term_id ASC");
 	$i=0;
 	foreach ($slugs as $slug) {
-	    $new_slug = PinyinSEO($slug->name);
+	    $new_slug = pinyin_seo_specials(PinyinSEO($slug->name));
 		$sql = "UPDATE " . $wpdb->terms . " SET `slug` = '{$new_slug}' WHERE term_id = '$slug->term_id'";
 		$update = $wpdb->query($sql);
 		$i++;
@@ -137,7 +141,7 @@ function reset_tag_slug_to_pinyin(){
 	$slugs = $wpdb->get_results("SELECT * FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON ($wpdb->term_taxonomy.term_id = $wpdb->terms.term_id) WHERE $wpdb->term_taxonomy.taxonomy='post_tag' ORDER BY $wpdb->terms.term_id ASC");
 	$i=0;
 	foreach ($slugs as $slug) {
-	    $new_slug = PinyinSEO($slug->name);
+	    $new_slug = pinyin_seo_specials(PinyinSEO($slug->name));
 		$sql = "UPDATE " . $wpdb->terms . " SET `slug` = '{$new_slug}' WHERE term_id = '$slug->term_id'";
 		$update = $wpdb->query($sql);
 		$i++;
@@ -149,7 +153,8 @@ if ($pinyin_seo_options['pinyin_slugs']=='true'){
 add_filter('sanitize_title', 'PinyinSEO', 1);}
 else{
 add_filter('name_save_pre', 'pinyin_seo_slugs', 0);}
-remove_filter('sanitize_title', 'sanitize_title_with_dashes');
+if ($pinyinseparator!='-' || $pinyinformat!='lower'){
+add_filter('sanitize_title', 'pinyin_seo_specials',99);}
 add_action('admin_menu', 'PinyinSEO_menu');
 
 function PinyinSEO_menu(){

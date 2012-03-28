@@ -10,12 +10,12 @@ if (isset($_POST['submit'])) {
       if ( function_exists('current_user_can') && !current_user_can('manage_options') )
             die(__('您没有访问权限', 'pinyin_seo'));
         check_admin_referer( 'pinyin_seo-options_update');
-$pinyin_seo_update=array(
+        $pinyin_seo_update=array(
          'pinyin_format' =>(trim($_POST['pinyin_format']) != '' ) ? trim($_POST['pinyin_format']) : $pinyin_seo_option_defaults['pinyin_format'],
 		 'pinyin_slugs' =>(trim($_POST['pinyin_slugs']) != '' ) ? trim($_POST['pinyin_slugs']) : $pinyin_seo_option_defaults['pinyin_slugs'],
 		 'pinyin_separator' =>(trim($_POST['pinyin_separator']) != '' ) ? trim($_POST['pinyin_separator']) : $pinyin_seo_option_defaults['pinyin_separator']);
-		update_option('pinyin_seo', $pinyin_seo_update);
-		$pinyin_seo_options=get_option('pinyin_seo');
+		  update_option('pinyin_seo', $pinyin_seo_update);
+		  $pinyin_seo_options=get_option('pinyin_seo');
 		    if (function_exists('wp_cache_flush')) {
 	     wp_cache_flush();
 	}
@@ -42,7 +42,7 @@ if($_POST['reset_tag_slug']){
 <table class="form-table">
          <tr valign="top">
           <th scope="row"><strong>拼音设置：</strong></th>
-           <td>作用于文章和页面标题的永久链接post_name以及分类目录标签别名slug:</td>
+           <td><strong>以下两项一旦设定请勿随意更改</strong>，作用于文章和页面标题的永久链接post_name以及分类目录标签别名slug:</td>
           </tr>
 		  <tr valign="top">
           <th scope="row">拼音分隔符 separator:</th>
@@ -71,7 +71,7 @@ if($_POST['reset_tag_slug']){
           </tr>  
           </table>
         <p class="submit">
-         <input type="submit" name="submit" value=" 更新设置&raquo; " />
+         <input type="submit" name="submit" value=" 更新拼音设置&raquo; " />
        </p>
 	   <h2>重置所有文章永久链接(post_name)，把wp_posts表中post_name字段写成拼音格式</h2>
 	    <p>注意事项：经测试，每条记录需要0.06秒，10秒160条，一分钟可以960条，已经设定为不限制php执行时间，请根据自己实际状况判断php是否超时。</p>
