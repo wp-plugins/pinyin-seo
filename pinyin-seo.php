@@ -2,9 +2,9 @@
 /*
 Plugin Name: Pinyin SEO(拼音SEO)
 Plugin URI: http://www.xuewp.com/pinyin-seo/
-Description: 拼音SEO插件可在文章发布时将中文标题将或者分类目录以及标签的永久链接转换成拼音格式，当前拼音数据库包含20966字，繁简通用，更有利于百度SEO，baidu就是最好的证明。2.0版将添加简单多音字功能。This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks for SEO purpose.
+Description: 拼音SEO插件可在文章发布时将中文标题将或者分类目录以及标签的永久链接转换成拼音格式，当前拼音数据库包含20966字，繁简通用，多音字词库需要扩充，2.0以上的版本均包含多音字功能。This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks for SEO purpose.
 Author: Chao Wang<xuewp.com@live.com>
-Version: 1.2
+Version: 2.0
 Author URI: http://www.xuewp.com/
 */
 /*Copyright 2012 Chao Wang (email: xuewp.com@live.com )
@@ -23,13 +23,13 @@ Author URI: http://www.xuewp.com/
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-define('PINYINSEO_VERSION', '1.2');
+define('PINYINSEO_VERSION', '2.0');
  if ( ! defined( 'WP_CONTENT_DIR' ) )
        define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
  if ( ! defined( 'WP_PLUGIN_DIR' ) )
        define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 
-$pinyin_seo_option_defaults=array('pinyin_separator'=>'-','pinyin_format'=>'lower','pinyin_slugs'=>'true');
+$pinyin_seo_option_defaults=array('pinyin_separator'=>'-','pinyin_format'=>'lower','pinyin_slugs'=>'true','pinyin_duoyinzi'=>'true');
 if(!get_option('pinyin_seo')){
 add_option('pinyin_seo', $pinyin_seo_option_defaults, '', 'yes');}
 $pinyin_seo_options=get_option('pinyin_seo');
@@ -39,13 +39,16 @@ $pinyinformat=$pinyin_seo_options['pinyin_format'];
 
 function PinyinSEO($chinese)
 {
+global $pinyin_seo_options;
 if (get_bloginfo('charset')!="UTF-8") {
 	$chinese= iconv(get_bloginfo('charset'), "UTF-8", $chinese);
 	}
     $pinyin = array();
     $retitle = '';
-	$dat=WP_PLUGIN_DIR .'/pinyin-seo/data/pinyin.dat';
+	$dat = WP_PLUGIN_DIR .'/pinyin-seo/data/pinyin.dat';
     $chinese = trim($chinese);
+	if ($pinyin_seo_options['pinyin_duoyinzi']=='true'){
+	$chinese = Duo_Yin_Zi($chinese);}
     if(count($pinyin)==0 && is_file($dat))//判断pinyin.dat是否存在，若不存在则跳过，以免出现死循环
     {
         $fp = fopen($dat,'r');
@@ -80,6 +83,37 @@ if (get_bloginfo('charset')!="UTF-8") {
 	return $retitle;
 }
 
+function Duo_Yin_Zi($str){
+    $retitle='';
+	$dat_duo=WP_PLUGIN_DIR .'/pinyin-seo/data/duoyinzi.dat';
+	$duoyinzi= array();
+	$slen=strlen($str);
+	if(count($duoyinzi)==0 && is_file($dat_duo)){
+        $fp = fopen($dat_duo,'r');
+        while(!feof($fp)){
+            $line = trim(fgets($fp));
+            $duoyinzi[$line[0].$line[1].$line[2].$line[3].$line[4].$line[5]] = substr($line,6,strlen($line)-6);
+        }
+        fclose($fp);
+    }
+    for($i=0;$i<$slen;$i++){
+        if(ord($str[$i])>128){
+            if ($i<($slen-3)){
+            $c = $str[$i].$str[$i+1].$str[$i+2].$str[$i+3].$str[$i+4].$str[$i+5];
+			}
+			else{$c = $str[$i].$str[$i+1].$str[$i+2];}
+            if(isset($duoyinzi[$c])){
+                $retitle.='-'.$duoyinzi[$c].'-';$i+=5;
+            }
+			else {$retitle.=$str[$i].$str[$i+1].$str[$i+2];$i+=2;}
+        }
+		else{
+		$retitle .= $str[$i];
+		}
+	}
+return $retitle;
+}
+
 function pinyin_seo_specials($title){
     global $pinyinformat,$pinyinseparator;
 	if($pinyinformat=='ucwords'){
@@ -106,47 +140,26 @@ function pinyin_seo_slugs($slug) {
 	return $title;
 }
 
-function reset_postname_to_pinyin(){
-    set_time_limit(0);
-	global $wpdb;
-	$posts = $wpdb->get_results("SELECT ID,post_title,post_status,post_name FROM $wpdb->posts ORDER BY id ASC");
-	$i=0;
-	foreach ($posts as $post) {
-		$new_postname = pinyin_seo_specials(PinyinSEO($post->post_title));
-		$sql = "UPDATE $wpdb->posts SET `post_name` = '{$new_postname}' WHERE id = '$post->ID'";
-		if($post->post_status=='publish'){
-		$update = $wpdb->query($sql);
-		$i++;}
-	}
-	echo " <div class=\"updated\"><p>操作成功：所有文章和页面的永久链接都已经重写! (一共有:<strong> $i </strong>篇文章的永久链接被改写)</p></div>";
+function Add_Duo_Yin_Zi($duoyinzi){
+$dat_duo=WP_PLUGIN_DIR .'/pinyin-seo/data/duoyinzi.dat';
+$add_duoyinzi = "\r\n".$duoyinzi;
+// 检测多音字词库是否可写
+if (is_writable($dat_duo)) {
+    // 使用添加模式打开，指针在文件末尾
+    if (!$handle = fopen($dat_duo, 'a')) {
+       echo "<div class=\"updated\"><p>操作失败：不能打开多音字词库 <strong>$filename</strong></p></div>";
+       exit;
+    }
+    // 将$add_duoyinzi写入
+    if (fwrite($handle, $add_duoyinzi) === FALSE) {
+        echo "<div class=\"updated\"><p>操作失败：不能写入到多音字词库 <strong>$filename</strong></p></div>";
+        exit;
+    }
+    echo "<div class=\"updated\"><p>操作成功：成功地将 <strong>$add_duoyinzi</strong> 写入到多音字词库$dat_duo</p></div>";
+    fclose($handle);
+} else {
+    echo "<div class=\"updated\"><p>操作失败：文件 <strong>$dat_duo</strong> 不可写</p></div>";
 }
-
-function reset_category_slug_to_pinyin(){
-    set_time_limit(0);
-	global $wpdb;
-	$slugs = $wpdb->get_results("SELECT * FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON ($wpdb->term_taxonomy.term_id = $wpdb->terms.term_id) WHERE $wpdb->term_taxonomy.taxonomy='category' ORDER BY $wpdb->terms.term_id ASC");
-	$i=0;
-	foreach ($slugs as $slug) {
-	    $new_slug = pinyin_seo_specials(PinyinSEO($slug->name));
-		$sql = "UPDATE " . $wpdb->terms . " SET `slug` = '{$new_slug}' WHERE term_id = '$slug->term_id'";
-		$update = $wpdb->query($sql);
-		$i++;
-	}
-	echo " <div class=\"updated\"><p>操作成功：所有分类(category)的永久链接都已经重写! (一共有:<strong> $i </strong>个分类(category)的永久链接被改写)</p></div>";
-}
-
-function reset_tag_slug_to_pinyin(){
-    set_time_limit(0);
-	global $wpdb;
-	$slugs = $wpdb->get_results("SELECT * FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON ($wpdb->term_taxonomy.term_id = $wpdb->terms.term_id) WHERE $wpdb->term_taxonomy.taxonomy='post_tag' ORDER BY $wpdb->terms.term_id ASC");
-	$i=0;
-	foreach ($slugs as $slug) {
-	    $new_slug = pinyin_seo_specials(PinyinSEO($slug->name));
-		$sql = "UPDATE " . $wpdb->terms . " SET `slug` = '{$new_slug}' WHERE term_id = '$slug->term_id'";
-		$update = $wpdb->query($sql);
-		$i++;
-	}
-	echo " <div class=\"updated\"><p>操作成功：所有标签(tag)的永久链接都已经重写! (一共有:<strong> $i </strong>个标签(tag)的永久链接被改写)</p></div>";
 }
 
 if ($pinyin_seo_options['pinyin_slugs']=='true'){

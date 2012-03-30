@@ -1,7 +1,7 @@
 /*本拼音数据库共收录20966汉字，繁简通用，已包括中日韩统一表意文字U+4E00..U+9FA5范围所有汉字，韩国和日本造的汉字，均按形声字方法注音。
-/*1000多个多音字只取一音，由本人一一筛选。如长春市长等包含多音字的无法正确转换，请手工修改。
+/*1000多个多音字只取一音，由本人一一筛选。本数据库配合多音字数据库，可以解决一般情况下的多音字问题，如还不满意，请手工修改。
 /*本数据库为UTF-8版本，dedecms程序稍作修改便可使用。如对部分字的注音有异议，请自行修改。
-/*负载测试，当处理少量汉字时，内存占用约64k，时间约0.06秒，当处理2万汉字时，内存占用348k，时间约为0.11秒。
+/*负载测试，当处理少量汉字时，内存占用约64k，时间约0.06秒，当处理2万汉字时，内存占用348k，时间约为0.11秒。Apache+php5.2.5环境下。
 /*有问题可以到www.xuewp.com/pin-yin-shu-ju-ku/提问。
 啊a
 阿a
@@ -386,7 +386,7 @@
 煲bao
 爆bao
 抱bao
-曝bao
+曝pu
 佨bao
 儤bao
 寶bao
@@ -404,7 +404,7 @@
 保bao
 媬bao
 藵bao
-薄bao
+薄bo
 饱bao
 蕔bao
 鸨bao
@@ -676,7 +676,7 @@
 袐bi
 繴bi
 鲾bi
-辟bi
+辟pi
 篦bi
 箆bi
 粃bi
@@ -885,7 +885,7 @@
 陃bing
 眪bing
 氷bing
-槟bing
+槟bin
 並bing
 邴bing
 併bing
@@ -1123,7 +1123,7 @@
 薒can
 爘can
 慙can
-孱can
+孱chan
 湌can
 篸can
 璨can
@@ -1242,7 +1242,7 @@
 猹cha
 嗏cha
 槎cha
-咤cha
+咤zha
 扠cha
 锸cha
 姹cha
@@ -1457,7 +1457,7 @@
 錩chang
 鲿chang
 鲳chang
-長chang
+長zhang
 鋹chang
 閶chang
 鬯chang
@@ -1527,7 +1527,7 @@
 蛼che
 車che
 頙che
-称chen
+称cheng
 莀chen
 榇chen
 嗔chen
@@ -5025,6 +5025,7 @@
 奤ha
 鉿ha
 紦ha
+还hai
 氦hai
 妎hai
 烸hai
@@ -5153,7 +5154,7 @@
 頏hang
 航hang
 魧hang
-行hang
+行xing
 笐hang
 裄hang
 筕hang
@@ -5685,7 +5686,6 @@
 奂huan
 逭huan
 烉huan
-还huan
 幻huan
 還huan
 患huan
@@ -5736,7 +5736,6 @@
 酄huan
 喛huan
 喚huan
-圜huan
 環huan
 槵huan
 攌huan
@@ -7047,7 +7046,7 @@
 搢jin
 勁jin
 巹jin
-劲jin
+劲jing
 馑jin
 漌jin
 珒jin
@@ -7509,7 +7508,6 @@
 蔨juan
 捐juan
 绢juan
-圈juan
 锩juan
 呟juan
 瓹juan
@@ -8976,7 +8974,7 @@
 谅liang
 辆liang
 两liang
-俩liang
+俩lia
 椋liang
 涼liang
 俍liang
@@ -9934,7 +9932,7 @@
 铓mang
 厖mang
 駹mang
-氓mang
+氓meng
 莾mang
 茫mang
 硭mang
@@ -11055,7 +11053,7 @@
 餪nuan
 黁nun
 梛nuo
-娜nuo
+娜na
 挪nuo
 掿nuo
 傩nuo
@@ -12250,7 +12248,7 @@
 且qie
 切qie
 惬qie
-茄qie
+茄jia
 锲qie
 怯qie
 洯qie
@@ -12646,6 +12644,7 @@
 齲qu
 詓qu
 麯qu
+圈quan
 湶quan
 巏quan
 瑔quan
@@ -13504,7 +13503,7 @@
 哂shen
 葠shen
 申shen
-什shen
+什shi
 屾shen
 脤shen
 莘shen
@@ -15742,7 +15741,7 @@
 婐wo
 瞃wo
 婑wo
-挝wo
+挝zhua
 楃wo
 握wo
 捰wo
@@ -16639,7 +16638,7 @@
 亵xie
 暬xie
 祄xie
-血xie
+血xue
 愶xie
 脇xie
 媟xie
@@ -18844,7 +18843,7 @@
 宇yu
 禹yu
 圄yu
-吁yu
+吁xu
 圫yu
 儥yu
 祤yu
@@ -18949,6 +18948,7 @@
 魊yu
 閾yu
 箊yu
+圜yuan
 剈yuan
 棩yuan
 媛yuan
@@ -19244,7 +19244,7 @@
 灾zai
 载zai
 睵zai
-仔zai
+仔zi
 再zai
 傤zai
 酨zai
@@ -19576,7 +19576,7 @@
 颭zhan
 譧zhan
 襢zhan
-粘zhan
+粘nian
 障zhang
 仗zhang
 瞕zhang
