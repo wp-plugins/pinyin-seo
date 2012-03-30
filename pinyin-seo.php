@@ -3,11 +3,11 @@
 Plugin Name: Pinyin SEO(拼音SEO)
 Plugin URI: http://www.xuewp.com/pinyin-seo/
 Description: 拼音SEO插件可在文章发布时将中文标题将或者分类目录以及标签的永久链接转换成拼音格式，当前拼音数据库包含20966字，繁简通用，多音字词库需要扩充，2.0以上的版本均包含多音字功能。This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks for SEO purpose.
-Author: Chao Wang<xuewp.com@live.com>
+Author: Chao Wang<webmaster@xuewp.com>
 Version: 2.0
 Author URI: http://www.xuewp.com/
 */
-/*Copyright 2012 Chao Wang (email: xuewp.com@live.com )
+/*Copyright 2012 Chao Wang (email: webmaster@xuewp.com )
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

@@ -15,24 +15,25 @@ Stable tag: /trunk/
 *   可以设定单独对文章的永久链接使用拼音，而不对分类目录和标签使用拼音，之前使用中文标签的需要设置一下，选择标签和分类不使用拼音，否则默认设置下会原来的中文url会出现404错误。
 *   **繁简通用**，港澳台同胞也可以使用，更有利于百度SEO，拼音域名都已经四拼时代拉,如参考消息。
 *   当前单字拼音数据库共收录**20966个汉字，繁简通用**，已包括中日韩统一表意文字U+4E00..U+9FA5范围所有汉字，韩国和日本造的汉字，均按形声字方法注音。
-*   拼音SEO 2.0以上版已包括**多音字功能**，当前多音字词库共收录751个双字词，不包含重复的繁体词，用户可以自行填加多音字双字词。
+*   拼音SEO 2.0以上版已包括**多音字功能**，当前多音字词库共收录751个双字词，不包含重复的繁体词，用户可以自行填加多音字双字词，取得更好的SEO效果。
 
 This plugin will convert Chinese characters to Pinyin(Latin alphabet for the romanization of Mandarin Chinese)Permalinks and slugs for SEO purpose.
 
 *   Setting using Pinyin SEO for categories and tags or not.
 *   Including 20966 chinese characters in CJK unicode range U+4E00..U+9FA5.
 *   Support nearly all Simplified Chinese charaters and Traditional Chinese charaters which can print in computer with default fonts.
-*   Enables polyphones(duō yīn zì) function in Pinyin SEO v2.0 now.
+*   Enables polyphones(duō yīn zì) function in Pinyin SEO v2.0 now,allow user to add new polyphones words for better SEO performance.
 
 包含功能：
 
 *   设定拼音分隔符。
 *   设定拼音大小写格式。
 *   简单多音字功能，自定义添加多音字功能。
-*   某些用户觉得中文的tag标签SEO效果更好，为此新增加了功能，以前使用中文标签，必须设定不对分类目录和标签使用拼音。
+*   某些用户觉得中文的tag标签SEO效果更好，为此新增加了功能，如果您以前使用的是中文标签，那么就必须设定不对分类目录和标签使用拼音。
 *   **以下两项功能涉及数据库操作，建议先备份数据库后在本地操作**。
-*   重置所有文章永久链接(post_name)，把wp_posts表中post_name字段写成拼音格式。
-*   重置所有分类目录和标签的永久链接(slug)，把wp_terms表中slug字段写成拼音格式。
+*   重置所有文章或者页面的永久链接(post_name)，把wp_posts表中post_name字段写成拼音格式。
+*   重置所有分类目录或标签的永久链接(slug)，把wp_terms表中slug字段写成拼音格式。
+*   恢复所有分类目录或标签的永久链接(slug)为中文，把wp_terms表中slug字段写成中文格式。
 
 SEO建议：
 
@@ -44,7 +45,7 @@ SEO建议：
 
 [**Wordpress拼音SEO插件官方站点演示**](http://www.xuewp.com/pinyin-seo/ "Wordpress拼音SEO插件")  如果您有任何问题或建议也可以留言，谢谢支持。
 
-作者的其他插件：[**Wordpress中文验证码**](http://www.xuewp.com/chinese-captcha/ "Wordpress中文验证码，汉字的，中国的")   [**韩文拉丁化/Korean Romanization**](http://www.xuewp.com/korean-romanization/ "把韩文转成拉丁字母永久链接，更利于SEO") 
+作者的其他插件：[**Wordpress中文验证码**](http://www.xuewp.com/chinese-captcha/ "Wordpress中文验证码，汉字的，中国的")   [**韩文SEO/Korean Romanization**](http://www.xuewp.com/korean-romanization/ "把韩文转成拉丁字母永久链接，更利于SEO") 
 
 == Installation ==
 1. Search 'pinyin seo' through the 'Add new plugins' page in Wordpress
