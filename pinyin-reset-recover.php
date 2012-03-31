@@ -36,7 +36,7 @@ function reset_pages_name_to_pinyin(){
 
 function reset_category_slug_to_pinyin(){
     set_time_limit(0);
-    $categories = get_terms('category');
+    $categories = get_terms('category',array(hide_empty=>'0'));
 	$num = 0;
 	foreach ($categories as $category) {
 		wp_update_term($category->term_id, 'category', array('slug' => PinyinSEO($category->name) ) );
@@ -47,7 +47,7 @@ function reset_category_slug_to_pinyin(){
 
 function reset_tag_slug_to_pinyin(){
     set_time_limit(0);
-    $tags = get_terms('post_tag');
+    $tags = get_terms('post_tag',array(hide_empty=>'0'));
 	$num = 0;
 	foreach ($tags as $tag) {
 		wp_update_term($tag->term_id, 'post_tag', array('slug' => PinyinSEO($tag->name) ) );
@@ -58,7 +58,7 @@ function reset_tag_slug_to_pinyin(){
 
 function recover_category_slug_to_pinyin(){
     set_time_limit(0);
-    $categories = get_terms('category');
+    $categories = get_terms('category',array(hide_empty=>'0'));
 	$num = 0;
 	foreach ($categories as $category) {
 		wp_update_term($category->term_id, 'category', array('slug' => sanitize_title($category->name) ) );
@@ -69,7 +69,7 @@ function recover_category_slug_to_pinyin(){
 
 function recover_tag_slug_to_pinyin(){
     set_time_limit(0);
-    $tags = get_terms('post_tag');
+    $tags = get_terms('post_tag',array(hide_empty=>'0'));
 	$num = 0;
 	foreach ($tags as $tag) {
 		wp_update_term($tag->term_id, 'post_tag', array('slug' => sanitize_title($tag->name) ) );
